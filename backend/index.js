@@ -10,12 +10,12 @@ const app = express()
 
 connection()
 
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:5173'
+}))
 app.use(cookieParser())
 app.use(express.json())
 app.use(router)
-app.use(cors({
-    credentials: true,
-    origin: '*'
-}))
 
 app.listen(5000, () => console.log('server listen on 5000'))

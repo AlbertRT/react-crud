@@ -11,6 +11,7 @@
   "author": "AlbertRT",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1328.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
@@ -18,9 +19,12 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
+    "mock-aws-s3": "^4.0.2",
     "moment": "^2.29.4",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.0",
+    "nock": "^13.3.0",
+    "npm": "^9.6.0",
     "uuid": "^9.0.0",
     "validator": "^13.9.0"
   }

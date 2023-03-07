@@ -1,6 +1,22 @@
-import { Schema } from "mongoose"
+import mongoose, { Schema } from "mongoose"
 import { v4 as uuidv4 } from 'uuid'
 import moment from "moment"
+
+const PhoneSchema = new Schema({
+    phoneId: {
+        type: String,
+        required: true,
+        default: uuidv4()
+    },
+    country: {
+        type: String,
+        required: true
+    },
+    number: {
+        type: String,
+        required: true
+    }
+})
 
 const UserSchema = new Schema({
     userId: {
@@ -11,7 +27,7 @@ const UserSchema = new Schema({
     firstName: {
         type: String,
         unique: false,
-        required: true
+        required: false
     },
     username: {
         type: String,
@@ -28,9 +44,8 @@ const UserSchema = new Schema({
         unique: true
     },
     phone: {
-        type: String,
-        required: true,
-        unique: true
+        type: PhoneSchema,
+        required: true
     },
     password: {
         type: String,
@@ -40,15 +55,17 @@ const UserSchema = new Schema({
         type: String,
         required: false
     },
-    friends: {
-        type: Array
-    },
     refresh_token: {
         type: String,
         default: null
     },
-    created_at: {
+    isVerified: {
         type: String,
+        required: true,
+        default: false
+    },
+    created_at: {
+        type: Number,
         reqiured: true,
         default: moment().unix()
     }
