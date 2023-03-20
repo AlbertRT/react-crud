@@ -27,7 +27,7 @@ const Login = () => {
 
         try {
             await axios.post("http://localhost:5000/api/v1/user/login", data);
-            navigate('/home')
+            navigate('/')
         } catch (error) {
             if (error.response) {
                 notify('error', error.response.data.msg)

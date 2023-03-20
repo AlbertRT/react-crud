@@ -59,11 +59,6 @@ const UserSchema = new Schema({
         type: String,
         default: null
     },
-    isVerified: {
-        type: String,
-        required: true,
-        default: false
-    },
     created_at: {
         type: Number,
         reqiured: true,

@@ -4,6 +4,7 @@ import connection from './mongodb/config/connection.js'
 import router from './routes/routes.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
+
 dotenv.config()
 
 const app = express()

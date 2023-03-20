@@ -1,14 +1,36 @@
 import express from 'express'
-import { getAllUsers, login, register, logout } from '../controller/AuthController.js'
+import { me, login, register, logout } from '../controller/AuthController.js'
+import { addGame, getAllGames, getGamesById } from '../controller/GamesProductController.js'
 import { refreshToken } from '../controller/RefershToken.js'
 import TokenVerify from '../middleware/TokenVerify.js'
+import multer from 'multer'
+import { v4 as uuidv4 } from 'uuid'
+import { getMedia } from '../controller/MediaController.js'
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'media')
+    },
+    filename: (req, file, cb) => {
+        cb(null, uuidv4() + file.originalname)
+    }
+})
+const upload = multer({ storage })
 
 const router = express.Router()
 
 export default router
 
 router.post('/api/v1/user/register', register)
-router.get('/api/v1/users/all', TokenVerify, getAllUsers)
+router.get('/api/v1/account/:userId', TokenVerify, me)
 router.post('/api/v1/user/login', login)
 router.get('/api/v1/auth/token', refreshToken)
 router.delete('/api/v1/user/logout', logout)
+
+// Game
+router.post('/api/v1/game/insert', upload.single('file'), addGame)
+router.get('/api/v1/games/all', getAllGames)
+router.get('/api/v1/game/:id', getGamesById)
+
+// Media
+router.get('/media/download/:id', getMedia)

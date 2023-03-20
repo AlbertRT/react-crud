@@ -1,80 +1,41 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import "./Card.scss";
+import './Home.scss'
+import { Link } from "react-router-dom";
+import axios from 'axios'
 
 const Home = () => {
-    const [name, setName] = useState('')
-    const [useremail, setUserEmail] = useState('')
-    const [userId, setUserId] = useState('')
-    const [token, setToken] = useState('')
-    const [expired, setexpired] = useState('')
+    const [items, setItems] = useState([])
 
-    const navigate = useNavigate()
+    async function getAllGames() {
+        const {data} = await axios.get("http://localhost:5000/api/v1/games/all")
+        setItems(data.data)
+    }
 
     useEffect(() => {
-        refreshToken()
+        getAllGames()
     }, [])
-    
-    async function refreshToken() {
-        try {
-            const response = await axios.get("http://localhost:5000/api/v1/auth/token")
-
-            setToken(response.data.accessToken)
-
-            const decoded = jwt_decode(response.data.accessToken)
-            const username = decoded.username;
-            const useremail = decoded.email;
-            const userid = decoded.userId;
-            
-            setName(username)
-            setUserEmail(useremail)
-            setUserId(userId)
-            setexpired(decoded.exp);
-
-        } catch (error) {
-            if (error.response) {
-                navigate('/')
-            }
-        }
-    }
-    async function logout () {
-        try {
-            await axios.delete('http://localhost:5000/api/v1/user/logout')
-            navigate('/')
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const axiosJwt = axios.create()
-
-    axiosJwt.interceptors.request.use(async (config) => {
-        const currentDate = new Date()
-        if (expired * 1000 < currentDate.getTime()) {
-            const response = await axios.get(
-				"http://localhost:5000/api/v1/auth/token"
-			);
-            config.headers.Authorization = `Bearer ${response.data.accessToken}`
-            setToken(response.data.accessToken);
-
-            const decoded = jwt_decode(response.data.accessToken);
-			const username = decoded.username;
-			const useremail = decoded.email;
-			const userid = decoded.userId;
-
-			setName(username);
-			setUserEmail(useremail);
-			setUserId(userId);
-			setexpired(decoded.exp);
-        }
-    }, (error) => { return Promise.reject(error) })
-
 	return (
-		<div>
-			<h1>Welcome: {name}</h1>
-			<button onClick={logout}>Logout</button>
-		</div>
+		<>
+			<div className="items">
+				{items.map((item, index) => (
+					<div className="card" key={index}>
+						<div className="product-thumb">
+							<img src={item.thumbnail.url} alt="" />
+						</div>
+						<div className="type">
+							<span>Base Game</span>
+						</div>
+						<div className="product-name">
+							<Link to={"/product/" + item.id} >{item.title}</Link>
+						</div>
+						<div className="price">
+							<span>{item.price}</span>
+						</div>
+					</div>
+				))}
+			</div>
+		</>
 	);
 };
 
