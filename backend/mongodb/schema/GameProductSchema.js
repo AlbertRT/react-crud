@@ -18,7 +18,7 @@ const gameEdition = new Schema({
 
 const thumbSchema = new Schema({
     id: String,
-        url: String
+    url: String
 })
 
 const SpecSchema = new Schema({
@@ -86,7 +86,8 @@ const GameProductSchema = new Schema({
     date_added: {
         type: String,
         default: moment().unix()
-    }
+    },
+    gallery: [thumbSchema]
 })
 
 export default GameProductSchema

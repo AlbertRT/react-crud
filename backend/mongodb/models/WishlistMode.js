@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import WishlistSchema from "../schema/UserWishListSchema"
+import WishlistSchema from "../schema/UserWishListSchema.js"
 
 const Wishses = mongoose.model('wishses', WishlistSchema)
 

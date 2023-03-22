@@ -24,8 +24,6 @@ export async function addGame(req, res) {
     aditional = JSON.parse(aditional)
     language = JSON.parse(language)
 
-    console.log(req.file)
-
     let thumbnail = {
         id: req.file.filename.split(".")[0],
         url: `http://localhost:5000/media/download/${req.file.filename.split(".")[0]}`
@@ -95,7 +93,7 @@ export async function getAllGames(req, res) {
 }
 export async function getGamesById(req, res) {
     try {
-        const game = Games.findOne({ id: req.params.id })
+        const game = await Games.findOne({ id: req.params.id })
 
         if (!game) {
             return res.status(404).json({
@@ -108,6 +106,44 @@ export async function getGamesById(req, res) {
             status: 'ok',
             data: game
         })
+
+    } catch (error) {
+        return res.status(500).json({
+            msg: "Error" + error.message
+        })
+    }
+}
+
+export async function insertGameGalleryPhoto(req, res) {
+    const { productId } = req.params
+    const files = req.files
+
+    try {
+        const Files = files.map( async (file) => {
+            let thumbnail = {
+                id: file.filename.split(".")[0],
+                url: `http://localhost:5000/media/download/${file.filename.split(".")[0]}`
+            }
+            let gallery = await Games.updateOne({ id: productId }, {
+                $push: {
+                    gallery: {
+                        id: thumbnail.id,
+                        url: thumbnail.url
+                    }
+                }
+            })
+            let media = await Media.create({
+                id: thumbnail.id,
+                path: file.path,
+                originalName: file.originalname,
+                fileName: file.filename,
+                mimetype: file.mimetype,
+                url: thumbnail.url
+            }) 
+            return [gallery, media]
+        })
+
+        res.status(200).json({ msg: "Gallery added! for " + productId })
 
     } catch (error) {
         return res.status(500).json({

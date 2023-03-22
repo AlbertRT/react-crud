@@ -1,0 +1,34 @@
+[
+	{
+		"minimum": {
+			"os": "Windows® 7 64 Bit | Windows® 8.1 64 Bit | Windows® 10 Home 64 Bit",
+			"cpu": "Intel® Core™ I7 930 | AMD® FX 6350",
+			"memory": "8 GB RAM",
+			"gpu": "Nvidia® GeForce™ GTS 450 (1 GB) | AMD® R7 250 (2 GB) | Intel Iris Xe G7 (Tiger Lake)",
+			"directX": "Version 9.0c",
+			"storage": "4 GB"
+		},
+		"recommended": {
+			"os": "Windows® 10 Home 64 bit",
+			"cpu": "Intel® Core™ I7 2700K | AMD® Ryzen 7 2700X",
+			"memory": "16 GB",
+			"gpu": "Nvidia® GeForce™ GTX 580 (1.5 GB) | AMD® Radeon™ RX 560 (4 GB)",
+			"directX": "Version 11",
+			"storage": "4 GB"
+		}
+	},
+	{
+		"type": "Login",
+		"list": ["Requires Epic Games account"]
+	},
+    [
+		{
+			"type": "Audio",
+			"list": ["English"]
+		},
+		{
+			"type": "Text",
+			"list": ["English", "Chinese - Simplified", "Korean", "French", "German", "Polish", "Portuguese - Brazil", "Spanish - Spain", "Russian"]
+		}
+	]
+]

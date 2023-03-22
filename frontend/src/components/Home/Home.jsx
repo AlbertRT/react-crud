@@ -3,6 +3,7 @@ import "./Card.scss";
 import './Home.scss'
 import { Link } from "react-router-dom";
 import axios from 'axios'
+import Navbar from "../../ui/navbar/Navbar";
 
 const Home = () => {
     const [items, setItems] = useState([])
@@ -17,6 +18,7 @@ const Home = () => {
     }, [])
 	return (
 		<>
+			<Navbar />
 			<div className="items">
 				{items.map((item, index) => (
 					<div className="card" key={index}>
@@ -27,7 +29,7 @@ const Home = () => {
 							<span>Base Game</span>
 						</div>
 						<div className="product-name">
-							<Link to={"/product/" + item.id} >{item.title}</Link>
+							<Link to={"/product/" + item.id}>{item.title}</Link>
 						</div>
 						<div className="price">
 							<span>{item.price}</span>
