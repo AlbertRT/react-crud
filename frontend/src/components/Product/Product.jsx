@@ -7,7 +7,7 @@ import {
 } from "react-icons/io5";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../../ui/navbar/Navbar";
+import Navbar from "../../UI/Navbar/Navbar";
 import jwt_decode from "jwt-decode";
 import moment from "moment";
 import { DiWindows, DiApple, DiLinux } from "react-icons/di";

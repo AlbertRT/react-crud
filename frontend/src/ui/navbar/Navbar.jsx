@@ -10,7 +10,7 @@ import {
 	IoSearchOutline,
 } from "react-icons/io5";
 
-const Navbar = (props) => {
+const Navbar = () => {
 	const [name, setName] = useState("");
 	const [userId, setUserId] = useState("");
 	const [token, setToken] = useState("");
@@ -26,15 +26,12 @@ const Navbar = (props) => {
 
 			const decoded = jwt_decode(response.data.accessToken);
 			const username = decoded.username;
-			const useremail = decoded.email;
 			const userid = decoded.userId;
 
 			setName(username);
 			setUserId(userid);
 			setexpired(decoded.exp);
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	}
 
 	const axiosJwt = axios.create();
@@ -51,11 +48,9 @@ const Navbar = (props) => {
 
 				const decoded = jwt_decode(response.data.accessToken);
 				const username = decoded.username;
-				const useremail = decoded.email;
 				const userid = decoded.userId;
 
 				setName(username);
-				setUserEmail(useremail);
 				setUserId(userid);
 				setexpired(decoded.exp);
 			}
@@ -67,7 +62,7 @@ const Navbar = (props) => {
 
 	useEffect(() => {
 		refreshToken();
-	}, []);
+	}, [token]);
 
 	return (
 		<div className="navbar">
@@ -83,31 +78,44 @@ const Navbar = (props) => {
 				</div>
 			</div>
 			<div className="bottom-navbar">
-				<div className="search-bar menu">
-					<div className="icon">
-						<IoSearchOutline />
+				<div className="left-menu">
+                    <div className="menu">
+                        <Link to={"/"}>Store</Link>
+                    </div>
+                    <div className="menu">
+                        <Link to={"/support"}>Support</Link>
+                    </div>
+                </div>
+				<div className="right-menu">
+					<div className="search-bar menu">
+						<div className="icon">
+							<IoSearchOutline />
+						</div>
+						<input type="text" placeholder="Search" />
 					</div>
-					<input type="text" placeholder="Search" />
-				</div>
-				<div className="cart menu">
-					<div className="icon">
-						<IoBagOutline />
+					<div className="cart menu">
+						<div className="icon">
+							<IoBagOutline />
+						</div>
+						<Link>Shoping Cart</Link>
 					</div>
-					<Link>Shoping Cart</Link>
-				</div>
-				<div className="account menu">
-					<div className="icon">
-						<IoPersonOutline />
+					<div className="account menu">
+						<div className="icon">
+							<IoPersonOutline />
+						</div>
+						{name ? (
+							<Link
+								to={`/account/profile/${userId}`}
+								className="link"
+							>
+								{name}
+							</Link>
+						) : (
+							<Link className="link" to="/login">
+								Login
+							</Link>
+						)}
 					</div>
-					{name ? (
-						<Link to="/account" className="link">
-							{name}
-						</Link>
-					) : (
-						<Link className="link" to="/login">
-							Login
-						</Link>
-					)}
 				</div>
 			</div>
 		</div>

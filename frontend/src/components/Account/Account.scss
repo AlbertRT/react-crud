@@ -1,0 +1,60 @@
+.account {
+	margin-top: 1rem;
+    
+	a {
+        text-decoration: none;
+		color: #000;
+	}
+    
+	.title {
+        padding: 1rem 2rem;
+		display: flex;
+		align-items: center;
+		font-size: 1.2rem;
+        
+		span {
+            margin-left: 0.5rem;
+			user-select: none;
+		}
+	}
+	.main {
+        display: flex;
+		.sidebar {
+            padding: 0 1rem;
+            flex: .2;
+			.menus .menu {
+				display: flex;
+				align-items: center;
+                width: 100%;
+                height: 40px;
+                
+                &:not(:last-child & :first-child) {
+                    margin: .5rem 0;
+                }
+				a {
+                    padding: 0 1rem;
+					display: flex;
+					align-items: center;
+                    width: 100%;
+                    height: 100%;
+                    color: #000;
+                    transition: all 250ms;
+                    border-radius: 5px;
+                    span {
+                        margin-left: .3rem;
+                    }
+
+                    &:hover {
+                        background: #e1e1e1;
+                    }
+                    &.active {
+                        background: #e1e1e1;
+                    }
+				}
+			}
+		}
+		.outlet {
+			flex: 1;
+		}
+	}
+}

@@ -3,7 +3,7 @@ import "./Card.scss";
 import './Home.scss'
 import { Link } from "react-router-dom";
 import axios from 'axios'
-import Navbar from "../../ui/navbar/Navbar";
+import Navbar from "../../UI/Navbar/Navbar";
 
 const Home = () => {
     const [items, setItems] = useState([])

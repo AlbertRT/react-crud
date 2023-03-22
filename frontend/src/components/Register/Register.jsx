@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { phoneList } from "../../utlis/phone";
+import { phoneList } from "../../Utils/phone";
 import Select from "react-select";
 import "./Register.scss";
 import { toast, ToastContainer } from "react-toastify";
@@ -12,6 +12,7 @@ const Register = () => {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [phone, setPhone] = useState("");
+    const [userCountry, setUserCountry] = useState("")
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
     const navigate = useNavigate()
@@ -74,6 +75,7 @@ const Register = () => {
 
 		const phoneNumberBefore = phone.replace(/^(\s?\+\d{1,3})\s?(\d+)/, "");
 
+        setUserCountry(e.label)
 		setPhone(`${code}${phoneNumberBefore}`);
 	}
 
@@ -87,18 +89,22 @@ const Register = () => {
         if (password !== confirmPassword) {
             return notify("error", "Your password is not Match");
         }
+        let Phone = {
+            country: userCountry,
+            number: phone
+        }
 
         let data = {
             username,
             email,
-            phone,
+            phone: Phone,
             password,
             confirmPassword
         }
 
         try {
             await axios.post("http://localhost:5000/api/v1/user/register", data);
-            navigate('/')
+            navigate('/login')
         } catch (error) {
             if (error.response) {
                 notify('error', error.response.data.msg)

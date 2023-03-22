@@ -17,6 +17,14 @@ const PhoneSchema = new Schema({
         required: true
     }
 })
+const Profile_Photo = new Schema({
+    id: {
+        type: String,
+        required: true,
+        default: uuidv4()
+    },
+    url: String
+})
 
 const UserSchema = new Schema({
     userId: {
@@ -36,7 +44,8 @@ const UserSchema = new Schema({
     lastName: {
         type: String,
         unique: false,
-        required: false
+        required: false,
+        default: null
     },
     email: {
         type: String,
@@ -63,6 +72,14 @@ const UserSchema = new Schema({
         type: Number,
         reqiured: true,
         default: moment().unix()
+    },
+    profile_photo: {
+        type: Profile_Photo,
+        default: {}
+    },
+    description: {
+        type: String,
+        default: null
     }
 })
 

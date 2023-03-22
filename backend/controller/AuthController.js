@@ -5,6 +5,8 @@ import validator from 'validator'
 
 export async function register(req, res) {
     const { firstName, username, email, phone, password, confirmPassword } = req.body
+    console.log(req.body)
+
     if (confirmPassword !== password) {
         return res.status(400).json({ msg: "Password not Match" })
     }
@@ -23,7 +25,7 @@ export async function register(req, res) {
 
     try {
 
-        const user = await User.create({
+        await User.create({
             firstName,
             username,
             email,
@@ -34,22 +36,6 @@ export async function register(req, res) {
             msg: "User created"
         })
 
-    } catch (error) {
-        return res.status(500).json({ msg: "An Error" + error })
-    }
-}
-
-export async function me(req, res) {
-
-    try {
-        const users = await User.findOne({ userId: req.params.userId })
-        if (!users) return res.status(400).json({ msg: "No Userfound" })
-
-        res.status(200).json({
-            code: 200,
-            status: 'ok',
-            data: users
-        })
     } catch (error) {
         return res.status(500).json({ msg: "An Error" + error })
     }

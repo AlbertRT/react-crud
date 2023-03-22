@@ -1,5 +1,5 @@
 import express from 'express'
-import { me, login, register, logout } from '../controller/AuthController.js'
+import {login, register, logout } from '../controller/AuthController.js'
 import { addGame, getAllGames, getGamesById, insertGameGalleryPhoto } from '../controller/GamesProductController.js'
 import { refreshToken } from '../controller/RefershToken.js'
 import TokenVerify from '../middleware/TokenVerify.js'
@@ -7,6 +7,7 @@ import multer from 'multer'
 import { v4 as uuidv4 } from 'uuid'
 import { getMedia } from '../controller/MediaController.js'
 import { addToWishlist, getWishlistByUserId } from '../controller/WishlistController.js'
+import { me } from '../controller/AccountController.js'
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -22,8 +23,8 @@ const router = express.Router()
 
 export default router
 
+// auth
 router.post('/api/v1/user/register', register)
-router.get('/api/v1/account/:userId', TokenVerify, me)
 router.post('/api/v1/user/login', login)
 router.get('/api/v1/auth/token', refreshToken)
 router.delete('/api/v1/user/logout', logout)
@@ -40,3 +41,6 @@ router.get('/media/download/:id', getMedia)
 // Wishlist
 router.get('/api/v1/wishlist/get/:userId', TokenVerify, getWishlistByUserId)
 router.post('/api/v1/wishlist/:productId', TokenVerify, addToWishlist)
+
+// Account
+router.get('/api/v1/account/me/:id', TokenVerify, me)
