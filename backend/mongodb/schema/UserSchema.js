@@ -25,6 +25,14 @@ const Profile_Photo = new Schema({
     },
     url: String
 })
+const UserBackground = new Schema({
+    id: {
+        type: String,
+        required: true,
+        default: uuidv4()
+    },
+    url: String
+})
 
 const UserSchema = new Schema({
     userId: {
@@ -35,7 +43,8 @@ const UserSchema = new Schema({
     firstName: {
         type: String,
         unique: false,
-        required: false
+        required: false,
+        default: null
     },
     username: {
         type: String,
@@ -80,6 +89,10 @@ const UserSchema = new Schema({
     description: {
         type: String,
         default: null
+    },
+    background: {
+        type: UserBackground,
+        default: {}
     }
 })
 

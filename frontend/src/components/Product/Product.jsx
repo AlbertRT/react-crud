@@ -8,15 +8,21 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../UI/Navbar/Navbar";
-import jwt_decode from "jwt-decode";
 import moment from "moment";
 import { DiWindows, DiApple, DiLinux } from "react-icons/di";
+import {
+	useAuthInterceptor,
+	refreshToken,
+} from "../../Utils/useAuthInterceptor";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Product = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const [token, setToken] = useState("");
 	const [response, setResponse] = useState();
+	const [RefreshToken, setToken] = useState();
+	const { token, expired, userId } = useAuthInterceptor();
 
 	const imgClick = (e) => {
 		const heroImg = document.querySelector(".hero-img img");
@@ -30,7 +36,7 @@ const Product = () => {
 		setResponse(data.data);
 	}
 
-	async function wishlistHandle() {
+	async function wishlistHandle(token) {
 		const config = {
 			headers: { Authorization: `Bearer ${token}` },
 		};
@@ -49,56 +55,15 @@ const Product = () => {
 		}
 	}
 
-	async function refreshToken() {
-		try {
-			const response = await axios.get(
-				"http://localhost:5000/api/v1/auth/token"
-			);
-
-			setToken(response.data.accessToken);
-
-			const decoded = jwt_decode(response.data.accessToken);
-			const username = decoded.username;
-			const userid = decoded.userId;
-
-			setName(username);
-			setUserId(userid);
-		} catch (error) {
-			// console.log(error);
-		}
-	}
-	const axiosJwt = axios.create();
-
-	axiosJwt.interceptors.request.use(
-		async (config) => {
-			const currentDate = new Date();
-			if (expired * 1000 < currentDate.getTime()) {
-				const response = await axios.get(
-					"http://localhost:5000/api/v1/auth/token"
-				);
-				config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-				setToken(response.data.accessToken);
-
-				const decoded = jwt_decode(response.data.accessToken);
-				const username = decoded.username;
-				const useremail = decoded.email;
-				const userid = decoded.userId;
-
-				setName(username);
-				setUserEmail(useremail);
-				setUserId(userid);
-				setexpired(decoded.exp);
-			}
-		},
-		(error) => {
-			return Promise.reject(error);
-		}
-	);
-
 	useEffect(() => {
-		refreshToken();
+		(async () => {
+			if (expired * 1000 < new Date().getTime()) {
+				const refresh_token = await refreshToken();
+				setToken(refresh_token);
+			}
+		})();
 		getDetails();
-	}, []);
+	}, [token]);
 	if (!response) {
 		return <div>Loading...</div>;
 	}
@@ -146,8 +111,43 @@ const Product = () => {
 		</div>
 	));
 
+	async function addToCart() {
+		try {
+			const config = {
+				headers: { Authorization: `Bearer ${token}` },
+			};
+
+			const bodyParameters = {
+				productId: response.id,
+				productName: response.title,
+				productPrice: response.price,
+				productThumbnail: response.thumbnail.url,
+			};
+
+			await axios.post(
+				`http://localhost:5000/api/v1/cart/${userId}`,
+				bodyParameters,
+				config
+			);
+            toast.success("An item Successfully added into your cart!")
+		} catch (error) {
+			console.log(error);
+		}
+	}
 	return (
 		<>
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
 			<Navbar />
 			<div className="product">
 				<div className="product-navigation">
@@ -218,7 +218,7 @@ const Product = () => {
 						</div>
 						<div className="button">
 							<div className="add-to-cart">
-								<button className="primary">
+								<button className="primary" onClick={addToCart}>
 									<div className="icon">
 										<IoBagAddOutline />
 									</div>
@@ -227,7 +227,9 @@ const Product = () => {
 							</div>
 							<div className="second-button">
 								<div className="add-to-wishlist">
-									<button onClick={wishlistHandle}>
+									<button
+										onClick={() => wishlistHandle(token)}
+									>
 										<div className="icon">
 											<IoHeartOutline />
 										</div>
@@ -271,7 +273,7 @@ const Product = () => {
 								<div className="platform metadata-title">
 									<span>Platform</span>
 								</div>
-                                {platform}
+								{platform}
 							</div>
 						</div>
 					</div>

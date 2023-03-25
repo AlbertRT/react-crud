@@ -55,6 +55,6 @@ export async function addToWishlist (req, res) {
 
         return res.json({ msg: "added into wishlist" }).status(200)
     } catch (error) {
-        console.log(error)
+        return res.status(500).json({ msg: "Error" + error.message })
     }
 }

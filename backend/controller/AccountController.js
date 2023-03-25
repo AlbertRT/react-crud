@@ -1,12 +1,12 @@
 import User from "../mongodb/models/UserModel.js"
 
 export async function me(req, res) {
-    const { id } = req.query
+    const { id } = req.params
 
     try {
 
         const Me = await User.findOne({
-            id
+            userId: id
         })
 
         if (!Me) return res.status(404).json({ msg: "User not found" })

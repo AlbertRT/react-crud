@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "nodemailer": "^6.9.1",
-    "otp-generator": "^4.0.1"
-  }
-}

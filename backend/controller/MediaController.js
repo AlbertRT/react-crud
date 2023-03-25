@@ -8,7 +8,7 @@ export async function getMedia(req, res) {
         
         if (!media) return res.status(404)
 
-        res.download(media.path)
+        return res.download(media.path)
     } catch (error) {
         console.log(error)
     }

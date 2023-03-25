@@ -5,7 +5,6 @@ import validator from 'validator'
 
 export async function register(req, res) {
     const { firstName, username, email, phone, password, confirmPassword } = req.body
-    console.log(req.body)
 
     if (confirmPassword !== password) {
         return res.status(400).json({ msg: "Password not Match" })
@@ -74,7 +73,7 @@ export async function login(req, res) {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000
         })
-        res.status(200).json({
+        return res.status(200).json({
             code: 200,
             status: 'ok',
             token: accessToken
