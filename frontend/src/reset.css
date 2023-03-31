@@ -26,9 +26,13 @@
     font-family: "Hind SemiBold";
     src: url("./Font/Hind-SemiBold.ttf");
 }
+@font-face {
+    font-family: 'Varela Round';
+    src: url("./Font/VarelaRound-Regular.ttf");
+}
 
 body {
-	font-family: "Hind";
+	font-family: "Varela Round";
 }
 .icon {
 	display: flex;

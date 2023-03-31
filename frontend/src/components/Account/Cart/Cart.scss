@@ -1,0 +1,65 @@
+.cart {
+    .col {
+        display: flex;
+        
+        .left {
+            flex: 1;
+
+            .items {
+                display: block;
+                .item {
+                    .item-container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        .left {
+                            display: flex;
+                            align-items: center;
+                            .thumbnail {
+                                img {
+                                    width: 70px;
+                                    height: 90px;
+                                }
+                            }
+                            .metadata {
+                                margin-left: 1rem;
+                                .name {
+                                    font-size: 1.1rem;
+                                    font-weight: bold;
+                                }
+                                .price {
+                                    font-size: .9rem;
+                                    color: #828282;
+                                    margin-top: .8rem;
+                                }
+                            }
+                        }
+                        .right {
+                            .remove-item {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 40px;
+                                height: 40px;
+                                cursor: pointer;
+                                transition: all 250ms;
+                                border-radius: 5px;
+
+                                &:hover {
+                                    background: #EC1D1D;
+                                    color: #ffffff;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        .right {
+            flex: .5;
+        }
+    }
+}

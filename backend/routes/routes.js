@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { getMedia } from '../controller/MediaController.js'
 import { addToWishlist, getWishlistByUserId } from '../controller/WishlistController.js'
 import { me } from '../controller/AccountController.js'
-import { addToCart } from '../controller/CartController.js'
+import {addToCart, deleteItemById, getAllCartItemByUserId} from '../controller/CartController.js'
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -49,3 +49,5 @@ router.get('/api/v1/account/me/:id', TokenVerify, me)
 // Cart
 
 router.post('/api/v1/cart/:userId', TokenVerify , addToCart)
+router.get('/api/v1/cart/get/:userId', TokenVerify, getAllCartItemByUserId)
+router.delete('/api/v1/cart/delete/:userId', TokenVerify, deleteItemById)

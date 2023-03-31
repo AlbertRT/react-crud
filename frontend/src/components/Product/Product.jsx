@@ -16,6 +16,7 @@ import {
 } from "../../Utils/useAuthInterceptor";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ProductSkeleton } from "../../UI/Loading/Loader"; 
 
 const Product = () => {
 	const { id } = useParams();
@@ -65,7 +66,7 @@ const Product = () => {
 		getDetails();
 	}, [token]);
 	if (!response) {
-		return <div>Loading...</div>;
+		return <ProductSkeleton />;
 	}
 
 	const minSpecs = Object.entries(response.specification.minimum);

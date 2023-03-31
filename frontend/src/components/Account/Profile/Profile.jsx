@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Profile.scss";
 import axios from "axios";
-import { IoCameraOutline } from "react-icons/io5";
 import {
 	useAuthInterceptor,
 	refreshToken,

@@ -50,3 +50,55 @@ export async function addToCart(req, res) {
         return res.status(500).json({ msg: "Error" + error.message })
     }
 }
+export async function getAllCartItemByUserId (req, res) {
+    const { userId } = req.params
+
+    try {
+        const data = await Cart.findOne({
+            userId
+        })
+
+        return res.status(200).json({
+            code: 200,
+            status: 'ok',
+            data
+        })
+    } catch (error) {
+        return res.status(500).json({
+            msg: "Error" + error.message
+        })
+    }
+}
+
+export async function deleteItemById(req, res) {
+    const { productId } = req.query
+    const { userId } = req.params
+
+    try {
+        const item = await Cart.findOne({
+            userId
+        })
+        const oldPriceIndex = item.cartItem.findIndex(item => item.productId === productId)
+        const newPrice = parseInt(item.totalPrice) - parseInt(item.cartItem[oldPriceIndex].productPrice)
+
+        const updatedCartItems = item.cartItem.filter(item => item.productId !== productId)
+        await Cart.updateOne({
+            userId
+        }, {
+            $set: {
+                cartItem: updatedCartItems
+            },
+            cartItemTotal: item.cartItemTotal - 1,
+            totalPrice: newPrice
+        }, {
+            new: true
+        })
+        return res.status(200).json({
+            msg: "an item successfully deleted from your cart"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            msg: "Error" + error.message
+        })
+    }
+}
