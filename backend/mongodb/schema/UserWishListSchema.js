@@ -21,8 +21,7 @@ const WishlistSchema = new Schema({
     },
     userId: {
         type: String,
-        required: true,
-        default: uuidv4()
+        required: true
     },
     wishes: {
         type: [WishesSchema],

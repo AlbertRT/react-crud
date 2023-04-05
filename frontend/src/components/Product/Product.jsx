@@ -16,7 +16,6 @@ import {
 } from "../../Utils/useAuthInterceptor";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ProductSkeleton } from "../../UI/Loading/Loader"; 
 
 const Product = () => {
 	const { id } = useParams();
@@ -56,6 +55,30 @@ const Product = () => {
 		}
 	}
 
+    async function addToCart() {
+        try {
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+
+            const bodyParameters = {
+                productId: response.id,
+                productName: response.title,
+                productPrice: response.price,
+                productThumbnail: response.thumbnail.url,
+            };
+
+            await axios.post(
+                `http://localhost:5000/api/v1/cart/${userId}`,
+                bodyParameters,
+                config
+            );
+            toast.success("An item Successfully added into your cart!")
+        } catch (error) {
+			if (error.response.status === 401) navigate("/login")
+        }
+    }
+
 	useEffect(() => {
 		(async () => {
 			if (expired * 1000 < new Date().getTime()) {
@@ -65,9 +88,10 @@ const Product = () => {
 		})();
 		getDetails();
 	}, [token]);
-	if (!response) {
-		return <ProductSkeleton />;
-	}
+
+    if (!response) {
+        return <div>Data is Loading...</div>
+    }
 
 	const minSpecs = Object.entries(response.specification.minimum);
 	const MSpecs = minSpecs.map(([key, value]) => (
@@ -112,29 +136,6 @@ const Product = () => {
 		</div>
 	));
 
-	async function addToCart() {
-		try {
-			const config = {
-				headers: { Authorization: `Bearer ${token}` },
-			};
-
-			const bodyParameters = {
-				productId: response.id,
-				productName: response.title,
-				productPrice: response.price,
-				productThumbnail: response.thumbnail.url,
-			};
-
-			await axios.post(
-				`http://localhost:5000/api/v1/cart/${userId}`,
-				bodyParameters,
-				config
-			);
-            toast.success("An item Successfully added into your cart!")
-		} catch (error) {
-			console.log(error);
-		}
-	}
 	return (
 		<>
 			<ToastContainer

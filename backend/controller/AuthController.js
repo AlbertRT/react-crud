@@ -2,6 +2,9 @@ import jwt from 'jsonwebtoken'
 import User from '../mongodb/models/UserModel.js'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
+import { v4 as uuidv4 } from 'uuid'
+import { cartIntance } from "./CartController.js";
+import {wishlishIntance} from "./WishlistController.js";
 
 export async function register(req, res) {
     const { firstName, username, email, phone, password, confirmPassword } = req.body
@@ -21,16 +24,20 @@ export async function register(req, res) {
     }
 
     const passwordHash = await bcrypt.hash(password, 10)
+    const userId = uuidv4()
 
     try {
 
         await User.create({
+            userId,
             firstName,
             username,
             email,
             phone,
             password: passwordHash
         })
+        cartIntance(userId)
+        wishlishIntance(userId)
         return res.status(200).json({
             msg: "User created"
         })

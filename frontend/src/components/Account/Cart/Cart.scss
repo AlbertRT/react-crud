@@ -1,4 +1,15 @@
 .cart {
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .delete-all {
+            font-size: .9rem;
+            cursor: pointer;
+            color: #EC1D1D;
+        }
+    }
     .col {
         display: flex;
         

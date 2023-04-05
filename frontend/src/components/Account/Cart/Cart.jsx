@@ -9,14 +9,21 @@ import axios from "axios";
 import './Cart.scss'
 import {IoTrashBinOutline} from 'react-icons/io5'
 import {toast, ToastContainer} from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import {  } from 'react-router-dom'
 
 const Cart = () => {
     const {id} = useParams();
     const [cartItem, setCartItem] = useState({});
     const {token, expired, userId} = useAuthInterceptor();
     const [newToken, setNewToken] = useState("")
+    const navigate = useNavigate()
 
-    async function getCartItem(token) {
+    if (!id) {
+        return navigate('/')
+    }
+
+    const getCartItem = async (token) => {
         try {
             const {data} = await axios.get(
                 "http://localhost:5000/api/v1/cart/get/" + id,
@@ -28,11 +35,11 @@ const Cart = () => {
             );
             setCartItem(data.data)
         } catch (error) {
-            console.log(error);
+            if (error.response.status === 401) navigate("/login")
         }
     }
 
-    async function removeItemById(productId) {
+    const removeItemById = async (productId) => {
         try {
             const {data} = await axios.delete(`http://localhost:5000/api/v1/cart/delete/${userId}?productId=${productId}`, {
                 headers: {
@@ -40,6 +47,18 @@ const Cart = () => {
                 }
             })
             toast.success(data.msg)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteAllItem = async () => {
+        try {
+            const {data} = await axios.delete(`http://localhost:5000/api/v1/cart/delete/all/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${newToken}`
+                }
+            })
         } catch (error) {
             console.log(error)
         }
@@ -74,7 +93,12 @@ const Cart = () => {
             />
             <div className="cart">
                 <div className="title">
-                    <span>Your Cart {cartItem?.cartItemTotal}</span>
+                    <div className={'header'}>
+                        <span>Your Cart {cartItem?.cartItemTotal}</span>
+                    </div>
+                    <div className={'delete-all'} onClick={deleteAllItem}>
+                        <span>Delete all Item</span>
+                    </div>
                 </div>
                 <div className="col">
                     <div className="left">

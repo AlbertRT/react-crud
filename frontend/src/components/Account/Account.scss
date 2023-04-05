@@ -19,40 +19,9 @@
 	}
 	.main {
         display: flex;
-		.sidebar {
-            padding: 0 1rem;
-            flex: .2;
-			.menus .menu {
-				display: flex;
-				align-items: center;
-                width: 100%;
-                height: 40px;
-                
-                &:not(:last-child & :first-child) {
-                    margin: .5rem 0;
-                }
-				a {
-                    padding: 0 1rem;
-					display: flex;
-					align-items: center;
-                    width: 100%;
-                    height: 100%;
-                    color: #000;
-                    transition: all 250ms;
-                    border-radius: 5px;
-                    span {
-                        margin-left: .3rem;
-                    }
-
-                    &:hover {
-                        background: #e1e1e1;
-                    }
-                    &.active {
-                        background: #e1e1e1;
-                    }
-				}
-			}
-		}
+		height: calc(80vh - 21vh);
+		max-height: calc(80vh - 21vh);
+		overflow-y: auto;
 		.outlet {
 			flex: 1;
 		}

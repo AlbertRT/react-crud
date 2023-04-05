@@ -1,6 +1,15 @@
 import Wishses from "../mongodb/models/WishlistMode.js"
 import Games from "../mongodb/models/GameProductModel.js"
 
+export async function wishlishIntance(id) {
+    try {
+        await Wishses.create({
+            userId: id
+        })
+    } catch (error) {
+        return error
+    }
+}
 export async function getWishlistByUserId (req, res) {
     const userId = req.params
 

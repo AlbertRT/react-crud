@@ -37,7 +37,6 @@ const UserBackground = new Schema({
 const UserSchema = new Schema({
     userId: {
         type: String,
-        default: uuidv4(),
         reqiured: true
     },
     firstName: {
