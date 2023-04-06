@@ -26,9 +26,8 @@ export async function addGame(req, res) {
 
     let thumbnail = {
         id: req.file.filename.split(".")[0],
-        url: `http://localhost:5000/media/download/${req.file.filename.split(".")[0]}`
+        url: `http://localhost:${process.env.AppPort}/media/download/${req.file.filename.split(".")[0]}`
     }
-    
 
     try {
         await Games.create({
@@ -122,7 +121,7 @@ export async function insertGameGalleryPhoto(req, res) {
         const Files = files.map( async (file) => {
             let thumbnail = {
                 id: file.filename.split(".")[0],
-                url: `http://localhost:5000/media/download/${file.filename.split(".")[0]}`
+                url: `http://localhost:${process.env.AppPort}/media/download/${file.filename.split(".")[0]}`
             }
             let gallery = await Games.updateOne({ id: productId }, {
                 $push: {

@@ -26,7 +26,10 @@ const Login = () => {
         }
 
         try {
-            await axios.post("http://localhost:5000/api/v1/user/login", data);
+            await axios.post('http://localhost:5000/api/v1/user/login', {
+				username,
+				password
+			})
             navigate('/')
         } catch (error) {
             if (error.response) {
